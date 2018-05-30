@@ -17,23 +17,34 @@ import java.util.Map;
 public class graph {
 	public Vertice auxx;
 	public int cont = 0;
+	
 
 	public class Vertice {
 		String nome;
 		boolean marcado;
 		List<Aresta> adj;
+		List<Aresta> dependentes;
+		long valorTotal;
 		long peso;
 
 		Vertice(String nome, long peso) {
 			this.nome = nome;
 			this.marcado = false;
 			this.adj = new ArrayList<Aresta>();
+			this.dependentes= new ArrayList<Aresta>();
 			this.peso = peso;
+			valorTotal=0;
 		}
 
 		void addAdj(Aresta e) {
 			adj.add(e);
 		}
+		void addDependente(Vertice achavertice, Vertice achavertice2, long quantidade) {
+			Aresta e = new Aresta (achavertice, achavertice2, quantidade);
+			dependentes.add(e);
+		}
+
+		
 
 	}
 
@@ -54,9 +65,11 @@ public class graph {
 	
 	List<Vertice> vertices;
 	List<Aresta> arestas;
+	public int gastoTotal;
 	public graph() {
 		vertices = new ArrayList<Vertice>();
 		arestas = new ArrayList<Aresta>();
+		gastoTotal = 0;
 	}
 
 	Vertice addVertice(String nome,long peso) {
@@ -179,27 +192,27 @@ public class graph {
 		}
 
 	}
-
+*/
 	void percorreLargura(graph g, String inicio) {
 
 		Queue<Vertice> q = new LinkedList<>();
 
-		int aux = g.achavertice(inicio);
+		Vertice aux = g.achavertice(inicio);
 
-		q.add(g.vertices.get(aux));
-		g.vertices.get(aux).marcado = true;
+		q.add(g.achavertice(inicio));
+		g.achavertice(inicio).marcado = true;
 
 		while (!q.isEmpty()) {
 
 			for (int i = 0; i < q.peek().adj.size(); i++) {
 
 				if (!q.peek().adj.get(i).destino.marcado) {
-					System.out.println(q.peek().adj.get(i).destino.nome + q.peek().adj.get(i).destino.nivel);
+					System.out.println(q.peek().adj.get(i).destino.nome);
 					q.peek().adj.get(i).destino.marcado = true;
 					q.add(q.peek().adj.get(i).destino);
 
 				} else if (q.contains(q.peek().adj.get(i).destino)) {
-					System.out.println(q.peek().adj.get(i).destino.nome + q.peek().adj.get(i).destino.nivel);
+					System.out.println(q.peek().adj.get(i).destino.nome);
 				}
 			}
 			q.poll();
@@ -209,21 +222,57 @@ public class graph {
 
 	void percorreProfundidade(graph g, String nodo) {
 
-		int aux = g.achavertice(nodo);
+		g.achavertice(nodo).marcado = true;
 
-		g.vertices.get(aux).marcado = true;
+		System.out.println(g.achavertice(nodo).nome);
 
-		System.out.println(g.vertices.get(aux).nome);
+		for (int i = 0; i < g.achavertice(nodo).adj.size(); i++) {
 
-		for (int i = 0; i < g.vertices.get(aux).adj.size(); i++) {
-
-			if (g.vertices.get(aux).adj.get(i).destino.marcado == false) {
-				percorreProfundidade(g, g.vertices.get(aux).adj.get(i).destino.nome);
+			if (g.achavertice(nodo).adj.get(i).destino.marcado == false) {
+				percorreProfundidade(g, g.achavertice(nodo).adj.get(i).destino.nome);
 			}
 		}
 
 	}
-*/
+	
+	void calculaCustos(graph g, Vertice inicio) {
+
+		long valorNodoAtual = inicio.peso;
+		inicio.valorTotal += valorNodoAtual;
+
+		for(Aresta a : inicio.dependentes ) {
+			a.destino.valorTotal += (valorNodoAtual * a.uso) ;
+		}
+		
+		inicio.marcado = true;
+		
+		for(Aresta a : inicio.dependentes ) {
+			if (temFilhosNaoMarcados(a.destino)) {
+				calculaCustos(g, a.destino);
+			}
+		}
+		
+	}
+	
+	boolean temFilhosNaoMarcados(Vertice v) {
+		for ( Aresta a : v.adj) {
+			if (a.destino.marcado == false) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public Vertice prucuraUltimo(graph g) {
+	
+		for (Vertice v : vertices ) {
+			if (v.adj.size() == 0) {
+				return v;
+			}
+		}
+		return null;
+	}
+
+	
 	public String toString() {
 		String r = "";
 		for (Vertice u : vertices) {
@@ -234,6 +283,19 @@ public class graph {
 			}
 			r += "\n";
 		}
+		return r;
+	}
+	public String imprimePesos() {
+		String r = "";
+		for (Vertice u : vertices) {
+			r += u.nome + " -> ";
+			r += u.valorTotal + " -> ";
+			for (Aresta a : u.dependentes) {
+				r += a.destino.nome + ", ";
+			}
+			r += "\n";
+		}
+		System.out.print(r);
 		return r;
 	}
 
