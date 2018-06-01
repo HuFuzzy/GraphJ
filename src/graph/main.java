@@ -46,16 +46,21 @@ public class main extends graph {
 				destino = parts[1];
 				quantidade = Long.parseLong(parts[2], 10) ;
 				
-				a.addAresta(a.achavertice(origem), a.achavertice(destino), quantidade);
-				a.achavertice(destino).addDependente(a.achavertice(destino), a.achavertice(origem), quantidade);
+				a.addAresta(quantidade,origem, destino);
+				
+				//a.achavertice(destino).addDependente(a.achavertice(destino), a.achavertice(origem), quantidade);
 				//System.out.println(origem + "  " + destino + " " + quantidade);
 			}
 			
 			//System.out.println("\n\n\n\n" + a);
 			//a.percorreProfundidade(a, "FWATRRQP");
-			a.calculaCustos(a,a.prucuraUltimo(a));
-			a.imprimePesos();
-		//	System.out.println(a.gastoTotal);
+		
+		//ArrayList<Vertice> aux = new ArrayList<>(); 
+		//aux = a.topologicalSort();
+		//for(int i = 0 ; i< aux.size(); i++) {
+		//	System.out.println(aux.get(i));
+		//}
+		a.calculaPesos();
 			
 		}
 
