@@ -32,18 +32,15 @@ public class graph {
 		i = achaVertice(origem);
 		j = achaVertice(destino);
 		
-		//adiciona aresta na lista
-		Aresta a = new Aresta(peso,
-				this.vertices.get(i),
-				this.vertices.get(j));
+		//adiciona aresta na lista de arestas do grafo
+		Aresta a = new Aresta(peso,this.vertices.get(i),this.vertices.get(j));
 		
-		//temCiclo(a);
 		this.arestas.add(a);
 		k = this.arestas.size();
 		
-		//adiciona aresta na lista de arestas incidentes em cada vertice
-		this.vertices.get(i).addIncidentes(this.arestas.get(k-1));
-		//this.vertices.get(j).addIncidentes(this.arestas.get(k-1));
+		//adiciona aresta como adjacente ao vertice de origem
+		this.vertices.get(i).addAdj(this.arestas.get(k-1));
+		//this.vertices.get(j).addAdj(this.arestas.get(k-1)); //Grafo dirigido
 	}
 			
 	public int addVertice(String nome, long peso){
@@ -62,19 +59,9 @@ public class graph {
 	}
 	
 
-	public void limparVerticesPai(){
-		for(int i=0; i<this.getVertices().size() ;i++)
-			this.getVertices().get(i).setPai(null);
-	}
-	
 	public void limparVerticeVisitado(){
 		for(int i=0; i<this.getVertices().size() ;i++)
 			this.getVertices().get(i).setVisitado(false);
-	}
-	
-	public void limparArestaVisitada(){
-		for(int i=0; i<this.getArestas().size() ;i++)
-			this.getArestas().get(i).setVisitado(false);
 	}
 	
 	public void imprimeArvore(){
@@ -87,41 +74,10 @@ public class graph {
 		return vertices;
 	}
 	
-	public int posicaoVertice(String nome){
-		int i;
-		
-		for (i=0; i<this.vertices.size() ; i++)
-			if (this.vertices.get(i).getNome().equals(nome))
-				return i;
-		
-		//se nao encontrar retorna o tamanho da lista vertices
-		return this.vertices.size();
-	
-	}
-	
-	public Vertice acharVertice(String nome){
-		return this.vertices.get(this.posicaoVertice(nome));
-	}
-	
-	public Aresta acharAresta(Vertice vet1, Vertice vet2){
-		for(int i=0; i<this.arestas.size();i++){
-			if( ((this.arestas.get(i).getOrigem().getNome().equals(vet1.getNome())) &&
-				(this.arestas.get(i).getDestino().getNome().equals(vet2.getNome()))) ||
-				((this.arestas.get(i).getOrigem().getNome().equals(vet2.getNome())) &&
-				(this.arestas.get(i).getDestino().getNome().equals(vet1.getNome()))) ){
-				return this.arestas.get(i);
-			}
-		}
-		return null;
-	}
-	
 	public ArrayList<Aresta> getArestas() {
 		return arestas;
 	}
 	
-
-    
-//------------------ORDENACAO-TOPOLOGICA-----------------------------------
     
     public void DFS(Vertice v, ArrayList<Vertice> l) {
     	v.setVisitado(true);
@@ -134,7 +90,7 @@ public class graph {
     	l.add(v);
     }
     
-    public ArrayList<Vertice> topologicalSort() {
+    public ArrayList<Vertice> Sort() {
     	ArrayList<Vertice> order = new ArrayList<Vertice>();
     	if(this.hasCycle)
     		System.out.println("Nao e possivel obter uma ordenacao topologica, pois este grafo possui ciclo(s)");
@@ -149,23 +105,25 @@ public class graph {
     
     public void calculaPesos() {
     	ArrayList<Vertice> top = new ArrayList<Vertice>();
-    	top = topologicalSort();
+    	top = Sort();
     	BigInteger aux = new BigInteger("0");
     	
     	for (Vertice v : top) {
     		
     		for (Aresta adj : v.getIncidentes()) {
     			System.out.println(v.getNome() +  " - " + adj.getPeso() + " - " +  adj.getDestino().getValorTotal());
-    			aux.add(new BigInteger(String.valueOf(adj.getDestino().getValorTotal().multiply(new BigInteger(Long.toString(adj.getPeso()))))));
+    			aux =aux.add(new BigInteger(String.valueOf(adj.getDestino().getValorTotal().multiply(new BigInteger(Long.toString(adj.getPeso()))))));
     		}
-    		System.out.println((new BigInteger(String.valueOf(aux.add(new BigInteger(Long.toString(v.getPeso())))))));
+    		
     		v.setValorTotal(new BigInteger(String.valueOf(aux.add(new BigInteger(Long.toString(v.getPeso()))))));  		
     		aux =  new BigInteger("0");
     	}
     	
-//    	for (Vertice v : top) {
-//    		System.out.println(v.getNome()+ " ------ " +v.getValorTotal());
-//    	}
+    	
+    	//Imprime o valor de cada Vértice
+    	for (Vertice v : top) {
+    		System.out.println(v.getNome()+ " ------ " +v.getValorTotal());
+    	}
     	
     }
     

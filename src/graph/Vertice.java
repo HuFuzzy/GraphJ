@@ -7,11 +7,10 @@ public class Vertice implements Comparable<Vertice> {
 	private String nome;
 	private long peso;
 	private BigInteger valorTotal;
-	private Vertice pai;
 	private ArrayList<Aresta> incidentes = new ArrayList<Aresta>();
 	private ArrayList<Vertice> vizinhos;
 	private boolean visitado = false;
-	private String cor = "branco"; 
+	
 	
 	
 	public Vertice(String nome, long peso) {
@@ -31,17 +30,6 @@ public class Vertice implements Comparable<Vertice> {
 		this.valorTotal = valorTotal;
 	}
 
-
-	public String getCor() {
-		return cor;
-	}
-
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
-
-	
-	
 	public String getNome() {
 		return nome;
 	}
@@ -57,15 +45,7 @@ public class Vertice implements Comparable<Vertice> {
 	public void setPeso(long l) {
 		this.peso = l;
 	}
-	
-	public Vertice getPai() {
-		return pai;
-	}
-	
-	public void setPai(Vertice pai) {
-		this.pai = pai;
-	}
-	
+
 	public boolean isVisitado() {
 		return visitado;
 	}
@@ -78,10 +58,10 @@ public class Vertice implements Comparable<Vertice> {
 		return incidentes;
 	}
 	
-	public void addIncidentes(Aresta incide) {
+	public void addAdj(Aresta incide) {
 		this.incidentes.add(incide);
 		
-		//adicionando vizinhos a lista
+		
 		if ( (incide.getOrigem().getNome().equals(this.getNome())) &&
 				(!this.isVizinho(incide.getDestino())) ){
 			
@@ -103,9 +83,7 @@ public class Vertice implements Comparable<Vertice> {
 	}
 	
 	public boolean isVizinho(Vertice vizinho){
-		int i;
-		
-		for (i=0; i<this.vizinhos.size() ; i++)
+		for (int i=0; i<this.vizinhos.size() ; i++)
 			if (this.vizinhos.get(i).getNome().equals(vizinho.getNome()))
 				return true;		
 		

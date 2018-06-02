@@ -17,7 +17,7 @@ public class main extends graph {
 	public static void main(String[] args) throws IOException {
 		
 		graph a = new graph();	
-		Path path1 = Paths.get("caso0100");
+		Path path1 = Paths.get("caso0600");
 		try (Scanner sc = new Scanner(Files.newBufferedReader(path1, Charset.forName("utf8")))) {
 			sc.useDelimiter("[\n\r]");
 			int header = sc.nextInt();
@@ -47,19 +47,8 @@ public class main extends graph {
 				quantidade = Long.parseLong(parts[2], 10) ;
 				
 				a.addAresta(quantidade,origem, destino);
-				
-				//a.achavertice(destino).addDependente(a.achavertice(destino), a.achavertice(origem), quantidade);
-				//System.out.println(origem + "  " + destino + " " + quantidade);
 			}
 			
-			//System.out.println("\n\n\n\n" + a);
-			//a.percorreProfundidade(a, "FWATRRQP");
-		
-		//ArrayList<Vertice> aux = new ArrayList<>(); 
-		//aux = a.topologicalSort();
-		//for(int i = 0 ; i< aux.size(); i++) {
-		//	System.out.println(aux.get(i));
-		//}
 		a.calculaPesos();
 			
 		}
