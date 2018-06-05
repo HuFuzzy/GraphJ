@@ -92,8 +92,6 @@ public class graph {
     
     public ArrayList<Vertice> Sort() {
     	ArrayList<Vertice> order = new ArrayList<Vertice>();
-    	if(this.hasCycle)
-    		System.out.println("Nao e possivel obter uma ordenacao topologica, pois este grafo possui ciclo(s)");
     	for(Vertice v:vertices){
     		if(!v.isVisitado())
     			DFS(v, order);
@@ -120,7 +118,7 @@ public class graph {
     	}
     	
     	
-    	//Imprime o valor de cada Vértice
+    	//Imprime o valor de cada VÃ©rtice
     	for (Vertice v : top) {
     		System.out.println(v.getNome()+ " ------ " +v.getValorTotal());
     	}
