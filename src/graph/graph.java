@@ -64,12 +64,6 @@ public class graph {
 			this.getVertices().get(i).setVisitado(false);
 	}
 	
-	public void imprimeArvore(){
-		for (int i=0; i<arestas.size();i++)
-			System.out.print(this.arestas.get(i).getOrigem().getNome() + this.arestas.get(i).getDestino().getNome() + " - " + this.arestas.get(i).getPeso() + " | ");
-		System.out.println();
-	}
-
 	public ArrayList<Vertice> getVertices() {
 		return vertices;
 	}
