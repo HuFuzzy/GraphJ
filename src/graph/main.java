@@ -17,7 +17,7 @@ public class main extends graph {
 	public static void main(String[] args) throws IOException {
 		
 		graph a = new graph();	
-		Path path1 = Paths.get("caso0600");
+		Path path1 = Paths.get("caso0200");
 		try (Scanner sc = new Scanner(Files.newBufferedReader(path1, Charset.forName("utf8")))) {
 			sc.useDelimiter("[\n\r]");
 			int header = sc.nextInt();
