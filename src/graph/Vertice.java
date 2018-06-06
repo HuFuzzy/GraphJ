@@ -20,13 +20,9 @@ public class Vertice implements Comparable<Vertice> {
 		this.peso = peso;
 
 	}
-
-
 	public BigInteger getValorTotal() {
 		return valorTotal;
 	}
-
-
 	public void setValorTotal(BigInteger valorTotal) {
 		this.valorTotal = valorTotal;
 	}
@@ -42,39 +38,15 @@ public class Vertice implements Comparable<Vertice> {
 	public long getPeso() {
 		return peso;
 	}
-	
-	public void setPeso(long l) {
-		this.peso = l;
-	}
-
 	public boolean isVisitado() {
 		return visitado;
 	}
-	
+	public void setPeso(long l) {
+		this.peso = l;
+	}
 	public void setVisitado(boolean visitado) {
 		this.visitado = visitado;
 	}
-
-	public ArrayList<Aresta> getIncidentes() {
-		return incidentes;
-	}
-	
-	public void addAdj(Aresta incide) {
-		this.incidentes.add(incide);
-		
-		
-		if ( (incide.getOrigem().getNome().equals(this.getNome())) &&
-				(!this.isVizinho(incide.getDestino())) ){
-			
-			this.addVizinhos(incide.getDestino());
-			
-		}else if ( (incide.getDestino().getNome().equals(this.getNome())) &&
-				(!this.isVizinho(incide.getOrigem())) ){
-			
-			this.addVizinhos(incide.getOrigem());
-		}
-	}
-	
 	public void addVizinhos(Vertice vizinho) {
 		this.vizinhos.add(vizinho);
 	}
@@ -83,6 +55,20 @@ public class Vertice implements Comparable<Vertice> {
 		return vizinhos;
 	}
 	
+	public ArrayList<Aresta> getIncidentes() {
+		return incidentes;
+	}
+	
+	public void addAdj(Aresta incide) {
+		this.incidentes.add(incide);
+		
+		if ( (incide.getOrigem().getNome().equals(this.getNome())) && (!this.isVizinho(incide.getDestino())) ){
+			this.addVizinhos(incide.getDestino());
+	
+		}else if ( (incide.getDestino().getNome().equals(this.getNome())) &&(!this.isVizinho(incide.getOrigem())) ){
+			this.addVizinhos(incide.getOrigem());
+		}
+	}	
 	public boolean isVizinho(Vertice vizinho){
 		for (int i=0; i<this.vizinhos.size() ; i++)
 			if (this.vizinhos.get(i).getNome().equals(vizinho.getNome()))
@@ -90,8 +76,6 @@ public class Vertice implements Comparable<Vertice> {
 		
 		return false;
 	}
-	
-
 	@Override
 	public int compareTo(Vertice vertice) {
 		
