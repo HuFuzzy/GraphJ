@@ -7,7 +7,7 @@ public class Vertice implements Comparable<Vertice> {
 	private String nome;
 	private long peso;
 	private BigInteger valorTotal;
-	private ArrayList<Aresta> incidentes = new ArrayList<Aresta>();
+	private ArrayList<Aresta> incidentes;
 	private ArrayList<Vertice> vizinhos;
 	private boolean visitado = false;
 	
@@ -15,6 +15,7 @@ public class Vertice implements Comparable<Vertice> {
 	
 	public Vertice(String nome, long peso) {
 		vizinhos = new ArrayList<Vertice>();
+		incidentes= new ArrayList<Aresta>();
 		this.nome = nome;
 		this.peso = peso;
 
